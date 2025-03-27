@@ -37,7 +37,6 @@ function viewContact(event) {
 		data: { contactId: event.target.value },
 		success: function(response) {
 			const result = JSON.parse(response);
-            console.log(result)
 			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = result.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('en-US', {
 				year: "numeric",
@@ -92,11 +91,11 @@ function editContact(event) {
 
 	$.ajax({
 		type: "POST",
-		url: "./components/addressbook.cfc?method=getContactById",
+		url: "/model/services/addressbook.cfc?method=fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
 			const result = JSON.parse(response);
-			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds, roleNames } = result;
+			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds } = result.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('fr-ca');
 
 			$("#editContactId").val(contactid);
