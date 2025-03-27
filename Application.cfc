@@ -1,3 +1,3 @@
-component extends=framework.one {
+component extends="framework.one" {
     this.sessionManagement = true;
 }

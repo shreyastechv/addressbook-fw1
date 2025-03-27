@@ -87,37 +87,37 @@
                                 <tr>
                                     <td class="text-primary fw-semibold">Name</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactName">Miss. Anjana S</td>
+                                    <td id="viewContactName">Contact Name</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Gender</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactGender">Female</td>
+                                    <td id="viewContactGender">Contact Gender</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Date Of Birth</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactDOB">12-05-2002</td>
+                                    <td id="viewContactDOB">Date of Birth</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Address</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactAddress">sdfsad, sadasd, Thiruvananthapuram, Kerala, India</td>
+                                    <td id="viewContactAddress">Contact Address</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Pincode</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactPincode">567658</td>
+                                    <td id="viewContactPincode">Contact Pincode</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Email id</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactEmail">anjana@gmail.com</td>
+                                    <td id="viewContactEmail">Contact Email</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Phone</td>
                                     <td class="text-primary fw-semibold">:</td>
-                                    <td id="viewContactPhone">9876567487</td>
+                                    <td id="viewContactPhone">Contact Phone Number</td>
                                 </tr>
                                 <tr>
                                     <td class="text-primary fw-semibold">Roles</td>

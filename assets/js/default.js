@@ -5,12 +5,12 @@ function logOut() {
 			type: "POST",
 			url: "./components/addressbook.cfc?method=logOut",
 			success: function(response) {
-				const responseJSON = JSON.parse(response);
-				if (responseJSON.statusCode === 200) {
+				const result = JSON.parse(response);
+				if (result.statusCode === 200) {
 					location.reload();
 				}
 				else {
-					alert(responseJSON.message);
+					alert(result.message);
 				}
 			},
 			error: function () {
@@ -33,11 +33,12 @@ function viewContact(event) {
 
 	$.ajax({
 		type: "POST",
-		url: "./components/addressbook.cfc?method=getContactById",
+		url: "/model/services/addressbook.cfc?method=fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = responseJSON;
+			const result = JSON.parse(response);
+            console.log(result)
+			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = result.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('en-US', {
 				year: "numeric",
 				month: "long",
@@ -65,8 +66,8 @@ function deleteContact(event) {
 			url: "./components/addressbook.cfc?method=deleteContact",
 			data: { contactId: event.target.value },
 			success: function(response) {
-				const responseJSON = JSON.parse(response);
-				if (responseJSON.statusCode === 200) {
+				const result = JSON.parse(response);
+				if (result.statusCode === 200) {
 					event.target.parentNode.parentNode.remove();
 				}
 			}
@@ -94,8 +95,8 @@ function editContact(event) {
 		url: "./components/addressbook.cfc?method=getContactById",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds, roleNames } = responseJSON;
+			const result = JSON.parse(response);
+			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds, roleNames } = result;
 			const formattedDOB = new Date(dob).toLocaleDateString('fr-ca');
 
 			$("#editContactId").val(contactid);
@@ -199,8 +200,8 @@ $("#contactManagement").submit(function(event) {
 		processData: false,
 		contentType: false,
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			if (responseJSON.statusCode === 200) {
+			const result = JSON.parse(response);
+			if (result.statusCode === 200) {
 				contactManagementMsgSection.css("color", "green");
 				loadHomePageData();
 				if ($("#editContactId").val() === "") {
@@ -210,7 +211,7 @@ $("#contactManagement").submit(function(event) {
 			else {
 				contactManagementMsgSection.css("color", "red");
 			}
-			contactManagementMsgSection.text(responseJSON.message);
+			contactManagementMsgSection.text(result.message);
 		},
 		error: function () {
 			contactManagementMsgSection.text("We encountered an error!");
@@ -263,8 +264,8 @@ $(document).ready(function(){
 		type: "POST",
 		url: "./components/addressbook.cfc?method=getTaskStatus",
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			if (responseJSON.taskExists) {
+			const result = JSON.parse(response);
+			if (result.taskExists) {
 				$("#scheduleBdayEmailBtn").text("DISABLE BDAY MAILS");
 				$("#scheduleBdayEmailBtn").addClass("bg-danger");
 				$("#scheduleBdayEmailBtn").removeClass("bg-secondary");
@@ -283,8 +284,8 @@ function toggleBdayEmailSchedule() {
 		type: "POST",
 		url: "./components/addressbook.cfc?method=toggleBdayEmailSchedule",
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			if (responseJSON.taskcurrentlyExists) {
+			const result = JSON.parse(response);
+			if (result.taskcurrentlyExists) {
 				$("#scheduleBdayEmailBtn").text("DISABLE BDAY MAILS");
 				$("#scheduleBdayEmailBtn").addClass("bg-danger");
 				$("#scheduleBdayEmailBtn").removeClass("bg-secondary");
@@ -326,8 +327,8 @@ $("#contactUpload").submit(function(event) {
 		processData: false,
 		contentType: false,
 		success: function(response) {
-			const responseJSON = JSON.parse(response);
-			if (responseJSON.statusCode === 200) {
+			const result = JSON.parse(response);
+			if (result.statusCode === 200) {
 				contactUploadMsgSection.css("color", "green");
 				contactUploadMsgSection.text("Contacts Uploaded Successfully. Check the downloaded file for more details.");
 			}
@@ -335,7 +336,7 @@ $("#contactUpload").submit(function(event) {
 				contactUploadMsgSection.css("color", "red");
 				contactUploadMsgSection.text("There were some errors. Check the downloaded file for more details.");
 			}
-			downloadURI(`./assets/spreadsheets/${responseJSON.fileName}`, `${responseJSON.fileName}`);
+			downloadURI(`./assets/spreadsheets/${result.fileName}`, `${result.fileName}`);
 			loadHomePageData();
 			thisForm.reset();
 		}
