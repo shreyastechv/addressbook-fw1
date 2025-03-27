@@ -1,14 +1,15 @@
- component {
-     function fetchContacts(integer userId = 0) {
-        local.response = {
-            "success" = true,
-            "data" = [],
-            "message" = ""
-        };
+<cfcomponent displayname="addressbookComponent" hint="This contains functions that are used by addressbook website">
+    <cffunction name="fetchContacts" access="public" returntype="struct">
+        <cfargument name="userId" type="integer" default="0">
 
-        try{
-            local.qryGetContacts = queryExecute(
-                "SELECT
+        <cfset local.response = {
+            "success" = true,
+            "data" = []
+        }>
+
+        <cftry>
+            <cfquery name="local.qryGetRoles" datasource="addressbookdatasource">
+                SELECT
                     contactid,
                     firstname,
                     lastname,
@@ -18,30 +19,59 @@
                 FROM
                     contactDetails
                 WHERE
-                    createdBy = :userId
-                    AND active = 1",
-                {
-                    userId = { value = arguments.userId, cfsqltype = "integer" }
-                },
-                {datasource = "addressbookdatasource"}
-            );
+                    createdBy = <cfqueryparam value="#arguments.userId#" cfsqltype="cf_sql_integer">
+                    AND active = 1
+            </cfquery>
 
-            for (row in local.qryGetContacts) {
-                arrayAppend(local.response.data, {
-                    "contactId" = row.contactid,
-                    "firstName" = row.firstname,
-                    "lastName" = row.lastname,
-                    "contactPicture" = row.contactpicture,
-                    "email" = row.email,
-                    "phone" = row.phone
-                });
-            }
-        }
-        catch (any e) {
-            local.response.success = false;
-            return local.response;
-        }
+            <cfloop query="local.qryGetRoles">
+                <cfset arrayAppend(local.response.data, {
+                    "contactId" = local.qryGetRoles.contactid,
+                    "firstName" = local.qryGetRoles.firstname,
+                    "lastName" = local.qryGetRoles.lastname,
+                    "contactPicture" = local.qryGetRoles.contactpicture,
+                    "email" = local.qryGetRoles.email,
+                    "phone" = local.qryGetRoles.phone
+                })>
+            </cfloop>
 
-        return local.response;
-    }
-}
+            <cfcatch type="any">
+                <cfset local.response.success = false>
+                <cfreturn local.response>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn local.response>
+    </cffunction>
+
+    <cffunction  name="fetchRoles" returnType="struct" access="public">
+
+        <cfset local.response = {
+            "success" = true,
+            "data" = []
+        }>
+
+        <cftry>
+            <cfquery name="local.qryGetRoles">
+                SELECT
+                    roleId,
+                    roleName
+                FROM
+                    roleDetails
+            </cfquery>
+
+            <cfloop query="local.qryGetRoles">
+                <cfset arrayAppend(local.response.data, {
+                    "roleId" = local.qryGetRoles.roleId,
+                    "roleName" = local.qryGetRoles.roleName
+                })>
+            </cfloop>
+
+            <cfcatch type="any">
+                <cfset local.response.success = false>
+                <cfreturn local.response>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn local.response>
+    </cffunction>
+</cfcomponent>
