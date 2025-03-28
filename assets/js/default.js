@@ -33,11 +33,10 @@ function viewContact(event) {
 
 	$.ajax({
 		type: "POST",
-		url: "/model/services/addressbook.cfc?method=fetchContacts",
+		url: "/index.cfm?action=main.fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const result = JSON.parse(response);
-			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = result.data[0];
+			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = response.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('en-US', {
 				year: "numeric",
 				month: "long",
@@ -91,11 +90,10 @@ function editContact(event) {
 
 	$.ajax({
 		type: "POST",
-		url: "/model/services/addressbook.cfc?method=fetchContacts",
+		url: "/index.cfm?action=main.fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const result = JSON.parse(response);
-			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds } = result.data[0];
+			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds } = response.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('fr-ca');
 
 			$("#editContactId").val(contactid);
@@ -256,88 +254,3 @@ function createContactsFile(file) {
 function loadHomePageData() {
 	$('#mainContent').load(document.URL +  ' #mainContent');
 }
-
-$(document).ready(function(){
-	// Set bday email schedule button state
-	$.ajax({
-		type: "POST",
-		url: "./components/addressbook.cfc?method=getTaskStatus",
-		success: function(response) {
-			const result = JSON.parse(response);
-			if (result.taskExists) {
-				$("#scheduleBdayEmailBtn").text("DISABLE BDAY MAILS");
-				$("#scheduleBdayEmailBtn").addClass("bg-danger");
-				$("#scheduleBdayEmailBtn").removeClass("bg-secondary");
-			}
-			else {
-				$("#scheduleBdayEmailBtn").text("SCHEDULE BDAY MAILS");
-				$("#scheduleBdayEmailBtn").addClass("bg-secondary");
-				$("#scheduleBdayEmailBtn").removeClass("bg-danger");
-			}
-		}
-	});
-});
-
-function toggleBdayEmailSchedule() {
-	$.ajax({
-		type: "POST",
-		url: "./components/addressbook.cfc?method=toggleBdayEmailSchedule",
-		success: function(response) {
-			const result = JSON.parse(response);
-			if (result.taskcurrentlyExists) {
-				$("#scheduleBdayEmailBtn").text("DISABLE BDAY MAILS");
-				$("#scheduleBdayEmailBtn").addClass("bg-danger");
-				$("#scheduleBdayEmailBtn").removeClass("bg-secondary");
-			}
-			else {
-				$("#scheduleBdayEmailBtn").text("SCHEDULE BDAY MAILS");
-				$("#scheduleBdayEmailBtn").addClass("bg-secondary");
-				$("#scheduleBdayEmailBtn").removeClass("bg-danger");
-			}
-		}
-	});
-}
-
-// Excel upload submit function
-$("#contactUpload").submit(function(event) {
-	event.preventDefault();
-	const thisForm = this;
-	const contactUploadMsgSection = $("#contactUploadMsgSection");
-	const uploadExcelInput = $("#uploadExcel");
-	const uploadExcelError = $("#uploadExcelError");
-	const contactData = new FormData(thisForm);
-
-	$(".error").text("");
-
-	if (uploadExcelInput.val() == "") {
-		uploadExcelError.text("Select a file");
-		return;
-	}
-	else if (uploadExcelInput[0].files[0].type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-		uploadExcelError.text("Only excel files are allowed");
-		return;
-	}
-
-	$.ajax({
-		type: "POST",
-		url: "./components/addressbook.cfc?method=uploadExcel",
-		data: contactData,
-		enctype: 'multipart/form-data',
-		processData: false,
-		contentType: false,
-		success: function(response) {
-			const result = JSON.parse(response);
-			if (result.statusCode === 200) {
-				contactUploadMsgSection.css("color", "green");
-				contactUploadMsgSection.text("Contacts Uploaded Successfully. Check the downloaded file for more details.");
-			}
-			else {
-				contactUploadMsgSection.css("color", "red");
-				contactUploadMsgSection.text("There were some errors. Check the downloaded file for more details.");
-			}
-			downloadURI(`./assets/spreadsheets/${result.fileName}`, `${result.fileName}`);
-			loadHomePageData();
-			thisForm.reset();
-		}
-	});
-});

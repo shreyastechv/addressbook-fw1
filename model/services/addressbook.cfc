@@ -1,7 +1,7 @@
 <cfcomponent displayname="addressbookComponent" hint="This contains functions that are used by addressbook website">
-    <cffunction name="fetchContacts" access="remote" returntype="struct" returnFormat="JSON">
-        <cfargument name="userId" type="integer" default="0">
-        <cfargument name="contactId" type="integer" default="0">
+    <cffunction name="fetchContacts" access="public" returntype="struct">
+        <cfargument name="userId" type="integer" required="false" default="0">
+        <cfargument name="contactId" type="integer" required="false" default="0">
 
         <cfset local.response = {
             "success" = true,
@@ -94,7 +94,7 @@
                         "pincode" = local.qryGetContacts.pincode,
                         "email" = local.qryGetContacts.email,
                         "phone" = local.qryGetContacts.phone,
-                        "roleIds" = local.qryGetContacts.roleIds,
+                        "roleIds" = listToArray(local.qryGetContacts.roleIds),
                         "roleNames" = local.qryGetContacts.roleNames
                     })>
                 </cfif>
@@ -110,14 +110,13 @@
     </cffunction>
 
     <cffunction  name="fetchRoles" returnType="struct" access="public">
-
         <cfset local.response = {
             "success" = true,
             "data" = []
         }>
 
         <cftry>
-            <cfquery name="local.qryGetRoles">
+            <cfquery name="local.qryGetRoles" datasource="addressbookdatasource">
                 SELECT
                     roleId,
                     roleName

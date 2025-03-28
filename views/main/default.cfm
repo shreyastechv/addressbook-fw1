@@ -10,8 +10,6 @@
                     <!--- <h4>#session.fullName#</h4> --->
                     <h4>Full Name</h4>
                     <button class="btn bg-primary text-white rounded-pill d-print-none" onclick="createContact()">CREATE CONTACT</button>
-                    <button id="scheduleBdayEmailBtn" class="btn bg-secondary text-white rounded-pill d-print-none" onclick="toggleBdayEmailSchedule()">SCHEDULE BDAY MAILS</button>
-                    <button class="btn bg-info text-white rounded-pill d-print-none" data-bs-toggle="modal" data-bs-target="##uploadContactModal">UPLOAD CONTACTS</button>
                 </div>
             </div>
             <!--- Right Section --->

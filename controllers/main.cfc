@@ -1,6 +1,11 @@
 component accessors=true {
     property addressbookService;
 
+    function init( fw ) {
+        variables.fw=arguments.fw;
+        return this;
+    }
+
     function default() {
         param name="rc.contacts.data" default=[];
         param name="rc.roles.data" default=[];
@@ -16,13 +21,12 @@ component accessors=true {
         rc.roles = local.roles.data;
     }
 
-    remote array function fetchContacts(integer contactId = 0) returnFormat = "JSON" {
+    public string function fetchContacts(struct rc) {
         param name="local.contacts.data" default=[];
-
         local.contacts = variables.addressbookService.fetchContacts(
-            contactId = contactId
+            contactId = rc.contactId
         );
 
-        return local.contacts.data;
+        variables.fw.renderData( "json", local.contacts );
     }
 }

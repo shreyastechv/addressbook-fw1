@@ -1,0 +1,27 @@
+<cfoutput>
+    <div class="container d-flex flex-column justify-content-center align-items-center py-5 mt-5">
+        <div id="submitMsgSection" class="text-danger p-2"></div>
+        <div class="row shadow-lg border-0 rounded-4 w-50">
+                <div class="leftSection col-md-4 d-flex align-items-center justify-content-center rounded-start-4">
+                    <img class="logoLarge" src="./assets/images/logo.png" alt="Address Book Logo">
+                </div>
+                <div class="rightSection bg-white col-md-8 p-4 rounded-end-4">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-normal mt-3">LOGIN</h3>
+                    </div>
+                    <form id="loginForm" name="loginForm" method="post">
+                        <div class="mb-3">
+                            <input type="text" class="inputBox" id="username" name="username" placeholder="Username" autocomplete="username">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="inputBox" id="password" name="password" placeholder="Password">
+                        </div>
+                        <button data-bs-toggle="tooltip" data-bs-placement="right" title="Enter your username" type="submit" id="loginBtn" name="loginBtn" class="btn text-primary border-primary w-100 rounded-pill pe-auto" disabled>LOGIN</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        Don't have an account? <a class="text-decoration-none" href="#buildURL('main.signup')#">Register Here</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+</cfoutput>
