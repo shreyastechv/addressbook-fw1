@@ -1,16 +1,14 @@
 function logOut() {
 	if (confirm("Confirm logout")) {
-
 		$.ajax({
 			type: "POST",
-			url: "./components/addressbook.cfc?method=logOut",
+			url: "/index.cfm?action=main.logout",
 			success: function(response) {
-				const result = JSON.parse(response);
-				if (result.statusCode === 200) {
+				if (response.success) {
 					location.reload();
 				}
 				else {
-					alert(result.message);
+                    alert("Sorry, Unable to logout!");
 				}
 			},
 			error: function () {

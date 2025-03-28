@@ -1,4 +1,45 @@
 <cfcomponent displayname="addressbookComponent" hint="This contains functions that are used by addressbook website">
+    <cffunction name="login" returnType="struct" access="public">
+        <cfargument required="true" name="userName" type="string">
+        <cfargument required="true" name="password" type="string">
+
+        <cfset local.response = {
+            "success" = false,
+            "message" = ""
+        }>
+
+        <cftry>
+            <cfquery name="local.getUserDetails" datasource="addressbookdatasource">
+                SELECT
+                    userid,
+                    username,
+                    fullname,
+                    profilepicture
+                FROM
+                    users
+                WHERE
+                    username = <cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">
+                    AND pwd = <cfqueryparam value = "#Hash(password, "SHA-256")#" cfsqltype = "cf_sql_varchar">
+            </cfquery>
+
+            <cfif local.getUserDetails.RecordCount EQ 0>
+                <cfset local.response.message = "Wrong username or password!">
+            <cfelse>
+                <cfset session.isLoggedIn = true>
+                <cfset session.userId = local.getUserDetails.userId>
+                <cfset session.fullName = local.getUserDetails.fullname>
+                <cfset session.profilePicture = local.getUserDetails.profilepicture>
+            </cfif>
+
+            <cfcatch type="any">
+                <cfreturn local.response>
+            </cfcatch>
+        </cftry>
+
+        <cfset local.response.success = true>
+        <cfreturn local.response>
+    </cffunction>
+
     <cffunction name="fetchContacts" access="public" returntype="struct">
         <cfargument name="userId" type="integer" required="false" default="0">
         <cfargument name="contactId" type="integer" required="false" default="0">

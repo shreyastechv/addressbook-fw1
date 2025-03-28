@@ -22,12 +22,12 @@
                         ADDRESS BOOK
                     </a>
                     <cfif structkeyExists(session, "userId")>
-                        <a class="text-white text-decoration-none d-print-none" href="/" onclick="logOut()">
+                        <button class="btn text-white text-decoration-none d-print-none" onclick="logOut()">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             Logout
-                        </a>
+                        </button>
                     <cfelse>
-                        <cfif NOT findNoCase("login", cgi.HTTP_URL)>
+                        <cfif rc.action NEQ "main.login">
                             <a class="text-white text-decoration-none d-print-none" href="#buildURL('main.login')#">
                                 <i class="fa-solid fa-right-to-bracket"></i>
                                 Login
