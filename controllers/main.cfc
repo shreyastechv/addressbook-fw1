@@ -92,4 +92,25 @@ component accessors=true {
 
         variables.fw.renderData( "json", local.response );
     }
+
+    public string function deleteContact(struct rc) {
+        local.response = {
+            "success" = false,
+            "message" = ""
+        }
+
+        if (!structKeyExists(session, "isLoggedIn")) {
+            local.response.success = false;
+            local.response.message = "User not logged in!";
+            variables.fw.renderData( "json", local.response );
+            return;
+        }
+
+        local.response = variables.addressbookService.deleteContact(
+            contactId = rc.contactId,
+            userId = session.userId
+        );
+
+        variables.fw.renderData( "json", local.response );
+    }
 }

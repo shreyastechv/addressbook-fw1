@@ -204,7 +204,7 @@
             "success" = false,
             "message" = ""
         }>
-        <cfset local.contactImage = "demo-contact-image.png">
+        <cfset local.contactImage = "demo-contact-image.jpg">
 
         <cfquery name="local.getEmailPhoneQuery" datasource="addressbookdatasource">
             SELECT
@@ -342,6 +342,56 @@
                 <cfset local.response["message"] = "Contact Updated Successfully">
             </cfif>
         </cfif>
+
+        <cfreturn local.response>
+    </cffunction>
+
+    <cffunction name="deleteContact" returnType="struct" access="public">
+        <cfargument required="true" name="contactId" type="string">
+        <cfargument required="true" name="userId" type="string">
+
+        <cfset local.response = {
+            "success" = false,
+            "message" = ""
+        }>
+
+        <cfquery name="local.deleteContactQuery">
+            BEGIN TRANSACTION;
+
+            -- Get Contact Picture Filename
+            SELECT
+                contactpicture
+            FROM
+                contactDetails
+            WHERE
+                contactid = <cfqueryparam value = "#arguments.contactId#" cfsqltype = "cf_sql_varchar">
+
+            -- Delete from contactRoles
+            UPDATE
+                contactRoles
+            SET
+                active = 0,
+                deletedBy = <cfqueryparam value = "#arguments.userId#" cfsqltype = "cf_sql_varchar">
+            WHERE
+                contactId = <cfqueryparam value = "#arguments.contactId#" cfsqltype = "cf_sql_integer">;
+
+            -- Update contactDetails
+            UPDATE
+                contactDetails
+            SET
+                active = 0,
+                deletedBy = <cfqueryparam value = "#arguments.userId#" cfsqltype = "cf_sql_varchar">
+            WHERE
+                contactId = <cfqueryparam value = "#arguments.contactId#" cfsqltype = "cf_sql_integer">;
+
+            COMMIT;
+        </cfquery>
+
+        <cfif local.deleteContactQuery.contactpicture NEQ "demo-contact-image.jpg">
+            <cffile action="delete" file="#expandPath('/assets/contactImages/' & local.deleteContactQuery.contactpicture)#">
+        </cfif>
+
+        <cfset local.response.success = true>
 
         <cfreturn local.response>
     </cffunction>

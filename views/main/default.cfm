@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="contactImageEnlarged d-flex align-items-center justify-content-end p-4">
-                    <img id="viewContactPicture" src="./assets/contactImages/demo-contact-image.png" alt="Contact Image Enlarged">
+                    <img id="viewContactPicture" src="./assets/contactImages/demo-contact-image.jpg" alt="Contact Image Enlarged">
                 </div>
             </div>
         </div>
@@ -267,7 +267,7 @@
                     </form>
                 </div>
                 <div class="contactImageEnlarged d-flex align-items-center justify-content-end p-4">
-                    <img id="editContactPicture" src="./assets/profilePictures/demo-profilepicture.png" alt="Contact Image Enlarged">
+                    <img id="editContactPicture" src="./assets/profilePictures/demo-profilepicture.jpg" alt="Contact Image Enlarged">
                 </div>
             </div>
         </div>

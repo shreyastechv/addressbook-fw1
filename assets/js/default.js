@@ -59,11 +59,10 @@ function deleteContact(event) {
 	if (confirm("Delete this contact?")) {
 		$.ajax({
 			type: "POST",
-			url: "./components/addressbook.cfc?method=deleteContact",
+			url: "/index.cfm?action=main.deleteContact",
 			data: { contactId: event.target.value },
 			success: function(response) {
-				const result = JSON.parse(response);
-				if (result.statusCode === 200) {
+				if (response.success) {
 					event.target.parentNode.parentNode.remove();
 				}
 			}
