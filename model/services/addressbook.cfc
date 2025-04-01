@@ -180,4 +180,169 @@
 
         <cfreturn local.response>
     </cffunction>
+
+    <cffunction name="modifyContacts" returnType="struct" access="public">
+        <cfargument required="true" name="contactId" type="string">
+        <cfargument required="true" name="contactTitle" type="string">
+        <cfargument required="true" name="contactFirstName" type="string">
+        <cfargument required="true" name="contactLastName" type="string">
+        <cfargument required="true" name="contactGender" type="string">
+        <cfargument required="true" name="contactDOB" type="string">
+        <cfargument required="true" name="contactImage" type="string">
+        <cfargument required="true" name="contactAddress" type="string">
+        <cfargument required="true" name="contactStreet" type="string">
+        <cfargument required="true" name="contactDistrict" type="string">
+        <cfargument required="true" name="contactState" type="string">
+        <cfargument required="true" name="contactCountry" type="string">
+        <cfargument required="true" name="contactPincode" type="string">
+        <cfargument required="true" name="contactEmail" type="string">
+        <cfargument required="true" name="contactPhone" type="string">
+        <cfargument required="true" name="roleIdsToInsert" type="string">
+        <cfargument required="true" name="roleIdsToDelete" type="string">
+
+        <cfset local.response = {
+            "success" = false,
+            "message" = ""
+        }>
+        <cfset local.contactImage = "demo-contact-image.png">
+
+        <cfquery name="local.getEmailPhoneQuery" datasource="addressbookdatasource">
+            SELECT
+                contactid
+            FROM
+                contactDetails
+            WHERE
+                createdBy = <cfqueryparam value = "#session.userId#" cfsqltype = "cf_sql_integer">
+                AND email = <cfqueryparam value = "#arguments.contactEmail#" cfsqltype = "cf_sql_varchar">
+                AND active = 1
+        </cfquery>
+
+        <cfif local.getEmailPhoneQuery.RecordCount AND local.getEmailPhoneQuery.contactid NEQ arguments.contactId>
+            <cfset local.response["message"] = "Email id already exists">
+        <cfelse>
+            <cfif arguments.contactImage NEQ "">
+                <cffile action="upload" destination="#expandpath("/assets/contactImages")#" fileField="contactImage" nameconflict="MakeUnique">
+                <cfset local.contactImage = cffile.serverFile>
+            </cfif>
+            <cfif len(trim(arguments.contactId)) EQ 0>
+                <cfquery name="local.insertContactsQuery" result="local.insertContactsResult" datasource="addressbookdatasource">
+                    INSERT INTO
+                        contactDetails (
+                            title,
+                            firstname,
+                            lastname,
+                            gender,
+                            dob,
+                            contactpicture,
+                            address,
+                            street,
+                            district,
+                            state,
+                            country,
+                            pincode,
+                            email,
+                            phone,
+                            createdBy
+                        )
+                    VALUES (
+                        <cfqueryparam value = "#arguments.contactTitle#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactFirstName#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactLastName#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactGender#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactDOB#" cfsqltype = "cf_sql_date">,
+                        <cfqueryparam value = "#local.contactImage#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactAddress#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactStreet#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactDistrict#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactState#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactCountry#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactPincode#" cfsqltype = "cf_sql_char">,
+                        <cfqueryparam value = "#arguments.contactEmail#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#arguments.contactPhone#" cfsqltype = "cf_sql_varchar">,
+                        <cfqueryparam value = "#session.userId#" cfsqltype = "cf_sql_integer">
+                    );
+                </cfquery>
+
+                <cfif len(trim(arguments.roleIdsToInsert))>
+                    <cfquery name="local.addRolesQuery" datasource="addressbookdatasource">
+                        INSERT INTO
+                            contactRoles (
+                                contactId,
+                                roleId
+                            )
+                        VALUES
+                        <cfloop list="#arguments.roleIdsToInsert#" index="local.i" item="local.roleId">
+                            (
+                                <cfqueryparam value="#local.insertContactsResult.GENERATEDKEY#" cfsqltype="cf_sql_integer">,
+                                <cfqueryparam value="#trim(local.roleId)#" cfsqltype="cf_sql_integer">
+                            )
+                            <cfif local.i LT listLen(arguments.roleIdsToInsert)>,</cfif>
+                        </cfloop>
+                    </cfquery>
+                </cfif>
+
+                <cfset local.response["message"] = "Contact Added Successfully">
+            <cfelse>
+                <cfquery name="local.updateContactDetailsQuery" datasource="addressbookdatasource">
+                    UPDATE
+                        contactDetails
+                    SET
+                        title = <cfqueryparam value = "#arguments.contactTitle#" cfsqltype = "cf_sql_varchar">,
+                        firstName = <cfqueryparam value = "#arguments.contactFirstName#" cfsqltype = "cf_sql_varchar">,
+                        lastName = <cfqueryparam value = "#arguments.contactLastName#" cfsqltype = "cf_sql_varchar">,
+                        gender = <cfqueryparam value = "#arguments.contactGender#" cfsqltype = "cf_sql_varchar">,
+                        dob = <cfqueryparam value = "#arguments.contactDOB#" cfsqltype = "cf_sql_date">,
+                        address = <cfqueryparam value = "#arguments.contactAddress#" cfsqltype = "cf_sql_varchar">,
+                        street = <cfqueryparam value = "#arguments.contactStreet#" cfsqltype = "cf_sql_varchar">,
+                        district = <cfqueryparam value = "#arguments.contactDistrict#" cfsqltype = "cf_sql_varchar">,
+                        STATE = <cfqueryparam value = "#arguments.contactState#" cfsqltype = "cf_sql_varchar">,
+                        country = <cfqueryparam value = "#arguments.contactCountry#" cfsqltype = "cf_sql_varchar">,
+                        pincode = <cfqueryparam value = "#arguments.contactPincode#" cfsqltype = "cf_sql_varchar">,
+                        email = <cfqueryparam value = "#arguments.contactEmail#" cfsqltype = "cf_sql_varchar">,
+                        phone = <cfqueryparam value = "#arguments.contactPhone#" cfsqltype = "cf_sql_varchar">,
+                        <cfif arguments.contactImage NEQ "">
+                            contactpicture = <cfqueryparam value = "#local.contactImage#" cfsqltype = "cf_sql_varchar">,
+                        </cfif>
+                        updatedBy = <cfqueryparam value = "#session.userId#" cfsqltype = "cf_sql_integer">
+                    WHERE
+                        contactid = <cfqueryparam value = "#arguments.contactId#" cfsqltype = "cf_sql_integer">
+                </cfquery>
+
+                <cfquery name="local.deleteRoleQuery" datasource="addressbookdatasource">
+                    UPDATE
+                        contactRoles
+                    SET
+                        active = 0,
+                        deletedBy = <cfqueryparam value = "#session.userId#" cfsqltype = "cf_sql_varchar">
+                    WHERE
+                        contactId = <cfqueryparam value="#arguments.contactId#" cfsqltype="cf_sql_integer">
+                        AND roleId IN (
+                            <cfqueryparam value="#arguments.roleIdsToDelete#" cfsqltype="cf_sql_varchar" list="true">
+                        )
+                </cfquery>
+
+                <cfif len(trim(arguments.roleIdsToInsert))>
+                    <cfquery name="local.addRolesQuery" datasource="addressbookdatasource">
+                        INSERT INTO
+                            contactRoles (
+                                contactId,
+                                roleId
+                            )
+                        VALUES
+                        <cfloop list="#arguments.roleIdsToInsert#" index="local.i" item="local.roleId">
+                            (
+                                <cfqueryparam value="#arguments.contactId#" cfsqltype="cf_sql_integer">,
+                                <cfqueryparam value="#trim(local.roleId)#" cfsqltype="cf_sql_integer">
+                            )
+                            <cfif local.i LT listLen(arguments.roleIdsToInsert)>,</cfif>
+                        </cfloop>
+                    </cfquery>
+                </cfif>
+
+                <cfset local.response["message"] = "Contact Updated Successfully">
+            </cfif>
+        </cfif>
+
+        <cfreturn local.response>
+    </cffunction>
 </cfcomponent>

@@ -11,7 +11,7 @@ component accessors=true {
         param name="rc.roles.data" default=[];
 
         local.contacts = variables.addressbookService.fetchContacts(
-            userId = 1
+            userId = session.userId
         );
 
         local.roles = variables.addressbookService.fetchRoles();
@@ -53,6 +53,42 @@ component accessors=true {
 
         structClear(session);
         local.response.success = true;
+
+        variables.fw.renderData( "json", local.response );
+    }
+
+    public string function modifyContacts(struct rc) {
+        local.response = {
+            "success" = false,
+            "message" = ""
+        }
+
+        if (!structKeyExists(session, "isLoggedIn")) {
+            local.response.success = false;
+            local.response.message = "User not logged in!";
+            variables.fw.renderData( "json", local.response );
+            return;
+        }
+
+        local.response = variables.addressbookService.modifyContacts(
+            contactId = rc.contactId,
+            contactTitle = rc.contactTitle,
+            contactFirstName = rc.contactFirstName,
+            contactLastName = rc.contactLastName,
+            contactGender = rc.contactGender,
+            contactDOB = rc.contactDOB,
+            contactImage = rc.contactImage,
+            contactAddress = rc.contactAddress,
+            contactStreet = rc.contactStreet,
+            contactDistrict = rc.contactDistrict,
+            contactState = rc.contactState,
+            contactCountry = rc.contactCountry,
+            contactPincode = rc.contactPincode,
+            contactEmail = rc.contactEmail,
+            contactPhone = rc.contactPhone,
+            roleIdsToInsert = rc.roleIdsToInsert,
+            roleIdsToDelete = rc.roleIdsToDelete
+        );
 
         variables.fw.renderData( "json", local.response );
     }

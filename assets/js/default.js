@@ -189,7 +189,7 @@ $("#contactManagement").submit(function(event) {
 	if (!validateContactForm()) return;
 	$.ajax({
 		type: "POST",
-		url: "./components/addressbook.cfc?method=modifyContacts",
+		url: "/index.cfm?action=main.modifyContacts",
 		data: contactData,
 		enctype: 'multipart/form-data',
 		processData: false,
