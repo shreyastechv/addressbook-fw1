@@ -33,25 +33,25 @@
                                     <cfloop array="#rc.contacts#" item="item">
                                         <tr>
                                             <td>
-                                                <img class="contactImage p-2 rounded-4" src="./assets/contactImages/#item.contactpicture#" alt="Contact Image">
+                                                <img class="contactImage p-2 rounded-4" src="./assets/contactImages/#item.contactPicture#" alt="Contact Image">
                                             </td>
-                                            <td>#item.firstname# #item.lastname#</td>
+                                            <td>#item.firstName# #item.lastName#</td>
                                             <td>#item.email#</td>
                                             <td>#item.phone#</td>
                                             <td class="d-print-none">
-                                                <button class="actionBtn btn btn-outline-primary rounded-pill px-3" value="#item.contactid#" onclick="editContact(event)">
+                                                <button class="actionBtn btn btn-outline-primary rounded-pill px-3" value="#item.contactId#" onclick="editContact(event)">
                                                     <span class="d-none d-lg-inline pe-none">EDIT</span>
                                                     <i class="fa-solid fa-pen-to-square d-lg-none pe-none"></i>
                                                 </button>
                                             </td>
                                             <td class="d-print-none">
-                                                <button class="actionBtn btn btn-outline-danger rounded-pill px-3" value="#item.contactid#" onclick="deleteContact(event)">
+                                                <button class="actionBtn btn btn-outline-danger rounded-pill px-3" value="#item.contactId#" onclick="deleteContact(event)">
                                                     <span class="d-none d-lg-inline pe-none">DELETE</span>
                                                     <i class="fa-solid fa-trash d-lg-none pe-none"></i>
                                                 </button>
                                             </td>
                                             <td class="d-print-none">
-                                                <button class="actionBtn btn btn-outline-info rounded-pill px-3" value="#item.contactid#" onclick="viewContact(event)">
+                                                <button class="actionBtn btn btn-outline-info rounded-pill px-3" value="#item.contactId#" onclick="viewContact(event)">
                                                     <span class="d-none d-lg-inline pe-none">VIEW</span>
                                                     <i class="fa-solid fa-eye d-lg-none pe-none"></i>
                                                 </button>

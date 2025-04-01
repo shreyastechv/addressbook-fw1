@@ -120,13 +120,13 @@
                     })>
                 <cfelse>
                     <cfset arrayAppend(local.response.data, {
-                        "contactid" = local.qryGetContacts.contactid,
+                        "contactId" = local.qryGetContacts.contactid,
                         "title" = local.qryGetContacts.title,
-                        "firstname" = local.qryGetContacts.firstname,
-                        "lastname" = local.qryGetContacts.lastname,
+                        "firstName" = local.qryGetContacts.firstname,
+                        "lastName" = local.qryGetContacts.lastname,
                         "gender" = local.qryGetContacts.gender,
                         "dob" = local.qryGetContacts.dob,
-                        "contactpicture" = local.qryGetContacts.contactpicture,
+                        "contactPicture" = local.qryGetContacts.contactpicture,
                         "address" = local.qryGetContacts.address,
                         "street" = local.qryGetContacts.street,
                         "district" = local.qryGetContacts.district,

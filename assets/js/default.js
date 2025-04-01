@@ -34,14 +34,14 @@ function viewContact(event) {
 		url: "/index.cfm?action=main.fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const { title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = response.data[0];
+			const { title, firstName, lastName, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleNames } = response.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('en-US', {
 				year: "numeric",
 				month: "long",
 				day: "numeric",
 			})
 
-			viewContactName.text(`${title} ${firstname} ${lastname}`);
+			viewContactName.text(`${title} ${firstName} ${lastName}`);
 			viewContactGender.text(gender);
 			viewContactDOB.text(formattedDOB);
 			viewContactAddress.text(`${address}, ${street}, ${district}, ${state}, ${country}`);
@@ -90,13 +90,13 @@ function editContact(event) {
 		url: "/index.cfm?action=main.fetchContacts",
 		data: { contactId: event.target.value },
 		success: function(response) {
-			const { contactid, title, firstname, lastname, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds } = response.data[0];
+			const { contactId, title, firstName, lastName, gender, dob, contactPicture, address, street, district, state, country, pincode, email, phone, roleIds } = response.data[0];
 			const formattedDOB = new Date(dob).toLocaleDateString('fr-ca');
 
-			$("#editContactId").val(contactid);
+			$("#editContactId").val(contactId);
 			$("#editContactTitle").val(title);
-			$("#editContactFirstName").val(firstname);
-			$("#editContactLastName").val(lastname);
+			$("#editContactFirstName").val(firstName);
+			$("#editContactLastName").val(lastName);
 			$("#editContactGender").val(gender);
 			$("#editContactDOB").val(formattedDOB);
 			$("#editContactImage").val("");
@@ -194,8 +194,7 @@ $("#contactManagement").submit(function(event) {
 		processData: false,
 		contentType: false,
 		success: function(response) {
-			const result = JSON.parse(response);
-			if (result.statusCode === 200) {
+			if (response.success) {
 				contactManagementMsgSection.css("color", "green");
 				loadHomePageData();
 				if ($("#editContactId").val() === "") {
@@ -205,7 +204,7 @@ $("#contactManagement").submit(function(event) {
 			else {
 				contactManagementMsgSection.css("color", "red");
 			}
-			contactManagementMsgSection.text(result.message);
+			contactManagementMsgSection.text(response.message);
 		},
 		error: function () {
 			contactManagementMsgSection.text("We encountered an error!");
