@@ -6,7 +6,7 @@ component accessors=true {
         return this;
     }
 
-    function signup() {
+    function signup(struct rc) {
         param name="rc.signupMsg" default="";
         param name="rc.fullname" default="";
         param name="rc.email" default="";
@@ -32,7 +32,7 @@ component accessors=true {
         }
     }
 
-    function default() {
+    function default(struct rc) {
         param name="rc.contacts.data" default=[];
         param name="rc.roles.data" default=[];
 
