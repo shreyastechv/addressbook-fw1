@@ -11,10 +11,12 @@ component {
 
         /* Handle page redirects */
         if (arrayFindNoCase(local.initialPages, rc.action)) {
+            /* Prevent access to login/signup page if user is already logged in */
             if (structKeyExists(session, "isLoggedIn") && session.isLoggedIn) {
                 variables.fw.redirect('main.default');
             }
         } else if (arrayFindNoCase(local.loginUserPages, rc.action)) {
+            /* Prevent acess to some pages if user if not logged in */
             if (structKeyExists(session, "isLoggedIn") == false || session.isLoggedIn == false) {
                 variables.fw.redirect('main.login');
             }

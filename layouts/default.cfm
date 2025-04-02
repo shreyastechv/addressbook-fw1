@@ -9,6 +9,7 @@
 		<link href="/assets/css/login.css" rel="stylesheet">
 		<script src="/assets/js/fontawesome.js"></script>
 		<script src="/assets/js/jquery-3.7.1.min.js"></script>
+		<script src="/assets/js/bootstrap.bundle.min.js"></script>
     </head>
 
     <body>
@@ -44,10 +45,5 @@
 
             #body#
         </cfoutput>
-
-		<script src="/assets/js/bootstrap.bundle.min.js"></script>
-		<script src="/assets/js/default.js"></script>
-		<script src="/assets/js/login.js"></script>
-        <script src="/assets/js/signup.js"></script>
     </body>
 </html>
