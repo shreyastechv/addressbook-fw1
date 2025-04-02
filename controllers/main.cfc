@@ -6,6 +6,32 @@ component accessors=true {
         return this;
     }
 
+    function signup() {
+        param name="rc.signupMsg" default="";
+        param name="rc.fullname" default="";
+        param name="rc.email" default="";
+        param name="rc.username" default="";
+        param name="rc.password" default="";
+        param name="rc.confirmPassword" default="";
+        param name="rc.profilePicture" default="";
+
+        if(structKeyExists(rc, "submitBtn")) {
+            local.signupResult = variables.addressbookService.signup(
+                fullname = rc.fullname,
+                email = rc.email,
+                username = rc.username,
+                password = rc.password
+            );
+
+            if (local.signupResult.success) {
+                rc.signupMsg = "Signup successfull. <a href='#variables.fw.buildURL('main.login')#'>Login</a> to continue.";
+            }
+            else {
+                rc.signupMsg = local.signupResult.message;
+            }
+        }
+    }
+
     function default() {
         param name="rc.contacts.data" default=[];
         param name="rc.roles.data" default=[];

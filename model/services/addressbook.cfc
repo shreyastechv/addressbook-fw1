@@ -1,4 +1,54 @@
 <cfcomponent displayname="addressbookComponent" hint="This contains functions that are used by addressbook website">
+    <cffunction name="signup" returnType="struct" access="public">
+        <cfargument required="true" name="fullName" type="string">
+        <cfargument required="true" name="email" type="string">
+        <cfargument required="true" name="userName" type="string">
+        <cfargument required="true" name="password" type="string">
+
+        <cfset local.hashedPassword = Hash(password, "SHA-256")>
+        <cfset local.response = {
+            "success" = false,
+            "message" = ""
+        }>
+
+       <cfquery name="local.checkUsernameAndEmail" datasource="addressbookdatasource">
+            SELECT
+				username
+			FROM
+				users
+			WHERE
+				username = <cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">
+				OR email = <cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">
+        </cfquery>
+
+		<cfif local.checkUsernameAndEmail.RecordCount>
+            <cfset local.response.message = "Email or Username already exists!">
+		<cfelse>
+            <cffile action="upload" destination="#expandpath("/assets/profilePictures")#" fileField="profilePicture" nameconflict="MakeUnique">
+            <cfset local.profilePictureName = cffile.serverFile>
+            <cfquery name="local.addUser" datasource="addressbookdatasource">
+                INSERT INTO
+					users (
+						fullname,
+						email,
+						username,
+						pwd,
+						profilePicture
+					)
+				VALUES (
+					<cfqueryparam value = "#arguments.fullName#" cfsqltype = "cf_sql_varchar">,
+					<cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">,
+					<cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">,
+					<cfqueryparam value = "#local.hashedPassword#" cfsqltype = "cf_sql_char">,
+					<cfqueryparam value = "#local.profilePictureName#" cfsqltype = "cf_sql_varchar">
+				)
+            </cfquery>
+            <cfset local.response.success = true>
+        </cfif>
+
+        <cfreturn local.response>
+    </cffunction>
+
     <cffunction name="login" returnType="struct" access="public">
         <cfargument required="true" name="userName" type="string">
         <cfargument required="true" name="password" type="string">

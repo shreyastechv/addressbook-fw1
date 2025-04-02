@@ -48,5 +48,6 @@
 		<script src="/assets/js/bootstrap.bundle.min.js"></script>
 		<script src="/assets/js/default.js"></script>
 		<script src="/assets/js/login.js"></script>
+        <script src="/assets/js/signup.js"></script>
     </body>
 </html>
