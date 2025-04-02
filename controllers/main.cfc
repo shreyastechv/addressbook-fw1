@@ -12,8 +12,6 @@ component accessors=true {
         param name="rc.email" default="";
         param name="rc.username" default="";
         param name="rc.password" default="";
-        param name="rc.confirmPassword" default="";
-        param name="rc.profilePicture" default="";
 
         if(structKeyExists(rc, "submitBtn")) {
             local.signupResult = variables.addressbookService.signup(
