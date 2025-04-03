@@ -393,6 +393,7 @@
             </cfif>
         </cfif>
 
+        <cfset local.response.success = true>
         <cfreturn local.response>
     </cffunction>
 

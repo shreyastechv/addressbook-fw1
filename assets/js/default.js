@@ -194,6 +194,7 @@ $("#contactManagement").submit(function(event) {
 		processData: false,
 		contentType: false,
 		success: function(response) {
+            console.log(response);
 			if (response.success) {
 				contactManagementMsgSection.css("color", "green");
 				loadHomePageData();

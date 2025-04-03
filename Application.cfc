@@ -8,7 +8,7 @@ component extends="framework.one" {
 
     variables.framework = {
         defaultItem = "default",
-        reloadApplicationOnEveryRequest = false,
+        reloadApplicationOnEveryRequest = true,
         trace = false,
         generateSES = false
     }
