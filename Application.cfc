@@ -5,4 +5,10 @@ component extends="framework.one" {
         /* Page redirects are handled in the below controller */
         controller('security.checkAuthorization');
     }
+
+    variables.framework = {
+        defaultItem = "default",
+        reloadApplicationOnEveryRequest = false,
+        trace = false
+    }
 }
