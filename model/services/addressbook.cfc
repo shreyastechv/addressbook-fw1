@@ -11,37 +11,37 @@
             "message" = ""
         }>
 
-       <cfquery name="local.checkUsernameAndEmail" datasource="addressbookdatasource">
+        <cfquery name="local.checkUsernameAndEmail" datasource="addressbookdatasource">
             SELECT
-				username
-			FROM
-				users
-			WHERE
-				username = <cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">
-				OR email = <cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">
+                username
+            FROM
+                users
+            WHERE
+                username = <cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">
+                OR email = <cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">
         </cfquery>
 
-		<cfif local.checkUsernameAndEmail.RecordCount>
+        <cfif local.checkUsernameAndEmail.RecordCount>
             <cfset local.response.message = "Email or Username already exists!">
-		<cfelse>
+        <cfelse>
             <cffile action="upload" destination="#expandpath("/assets/profilePictures")#" fileField="profilePicture" nameconflict="MakeUnique">
             <cfset local.profilePictureName = cffile.serverFile>
             <cfquery name="local.addUser" datasource="addressbookdatasource">
                 INSERT INTO
-					users (
-						fullname,
-						email,
-						username,
-						pwd,
-						profilePicture
-					)
-				VALUES (
-					<cfqueryparam value = "#arguments.fullName#" cfsqltype = "cf_sql_varchar">,
-					<cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">,
-					<cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">,
-					<cfqueryparam value = "#local.hashedPassword#" cfsqltype = "cf_sql_char">,
-					<cfqueryparam value = "#local.profilePictureName#" cfsqltype = "cf_sql_varchar">
-				)
+                    users (
+                        fullname,
+                        email,
+                        username,
+                        pwd,
+                        profilePicture
+                    )
+                VALUES (
+                    <cfqueryparam value = "#arguments.fullName#" cfsqltype = "cf_sql_varchar">,
+                    <cfqueryparam value = "#arguments.email#" cfsqltype = "cf_sql_varchar">,
+                    <cfqueryparam value = "#arguments.userName#" cfsqltype = "cf_sql_varchar">,
+                    <cfqueryparam value = "#local.hashedPassword#" cfsqltype = "cf_sql_char">,
+                    <cfqueryparam value = "#local.profilePictureName#" cfsqltype = "cf_sql_varchar">
+                )
             </cfquery>
             <cfset local.response.success = true>
         </cfif>
