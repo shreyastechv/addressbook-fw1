@@ -9,6 +9,7 @@ component extends="framework.one" {
     variables.framework = {
         defaultItem = "default",
         reloadApplicationOnEveryRequest = false,
-        trace = false
+        trace = false,
+        generateSES = false
     }
 }

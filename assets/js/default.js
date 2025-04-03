@@ -212,41 +212,6 @@ $("#contactManagement").submit(function(event) {
 	});
 });
 
-function downloadURI(uri, name) {
-	var link = document.createElement("a");
-	link.download = name;
-	link.href = uri;
-	link.click();
-	link.remove();
-}
-
-function createContactsFile(file) {
-	$.ajax({
-		type: "POST",
-		url: "./components/addressbook.cfc?method=createContactsFile",
-		data: {
-			file: file
-		},
-		success: function(response) {
-			const fileName = JSON.parse(response);
-			switch(file) {
-				case "pdf":
-					downloadURI(`./assets/pdfs/${fileName}`, `${fileName}`);
-					break;
-				case "excel":
-					downloadURI(`./assets/spreadsheets/${fileName}`, `${fileName}`);
-				  	break;
-				case "excelTemplate":
-					downloadURI(`./assets/spreadsheets/${fileName}`, "Plain_Template.xlsx");
-				  	break;
-				case "excelTemplateWithData":
-					downloadURI(`./assets/spreadsheets/${fileName}`, "Template_with_data.xlsx");
-					break;
-			}
-		}
-	});
-}
-
 function loadHomePageData() {
 	$('#mainContent').load(document.URL +  ' #mainContent');
 }

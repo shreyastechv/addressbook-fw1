@@ -3,7 +3,7 @@
         <div id="submitMsgSection" class="p-2">#rc.signupMsg#</div>
         <div class="row shadow-lg border-0 rounded-4 w-75">
                 <div class="col-md-4 d-flex align-items-center justify-content-center rounded-start-4">
-                    <img class="logoLarge" src="./assets/images/logo.png" alt="Address Book Logo">
+                    <img class="logoLarge" src="/assets/images/logo.png" alt="Address Book Logo">
                 </div>
                 <div class="rightSection bg-white col-md-8 p-4 rounded-end-4">
                     <div class="text-center mb-2">

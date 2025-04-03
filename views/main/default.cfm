@@ -5,10 +5,8 @@
             <!--- Left Section --->
             <div class="col-lg-3 col-md-4 col-12 sidebar bg-transparent mb-2">
                 <div class="bg-white d-flex flex-column align-items-center px-3 py-5 gap-2">
-                    <!--- <img class="userProfileIcon rounded-4" src="./assets/profilePictures/#session.profilePicture#" alt="User Profile Icon"> --->
-                    <img class="userProfileIcon rounded-4" src="./assets/profilePictures/profilePic.jpg" alt="User Profile Icon">
-                    <!--- <h4>#session.fullName#</h4> --->
-                    <h4>Full Name</h4>
+                    <img class="userProfileIcon rounded-4" src="/assets/profilePictures/#session.profilePicture#" alt="User Profile Icon">
+                    <h4>#session.fullName#</h4>
                     <button class="btn bg-primary text-white rounded-pill d-print-none" onclick="createContact()">CREATE CONTACT</button>
                 </div>
             </div>
@@ -33,7 +31,7 @@
                                     <cfloop array="#rc.contacts#" item="item">
                                         <tr>
                                             <td>
-                                                <img class="contactImage p-2 rounded-4" src="./assets/contactImages/#item.contactPicture#" alt="Contact Image">
+                                                <img class="contactImage p-2 rounded-4" src="/assets/contactImages/#item.contactPicture#" alt="Contact Image">
                                             </td>
                                             <td>#item.firstName# #item.lastName#</td>
                                             <td>#item.email#</td>
@@ -130,7 +128,7 @@
                     </div>
                 </div>
                 <div class="contactImageEnlarged d-flex align-items-center justify-content-end p-4">
-                    <img id="viewContactPicture" src="./assets/contactImages/demo-contact-image.jpg" alt="Contact Image Enlarged">
+                    <img id="viewContactPicture" src="/assets/contactImages/demo-contact-image.jpg" alt="Contact Image Enlarged">
                 </div>
             </div>
         </div>
@@ -267,7 +265,7 @@
                     </form>
                 </div>
                 <div class="contactImageEnlarged d-flex align-items-center justify-content-end p-4">
-                    <img id="editContactPicture" src="./assets/profilePictures/demo-profilepicture.jpg" alt="Contact Image Enlarged">
+                    <img id="editContactPicture" src="/assets/profilePictures/demo-profilepicture.jpg" alt="Contact Image Enlarged">
                 </div>
             </div>
         </div>
