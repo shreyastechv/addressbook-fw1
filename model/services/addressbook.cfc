@@ -459,7 +459,7 @@
                 </cfquery>
 
                 <cfif local.getContactImageQry.contactpicture NEQ "demo-contact-image.jpg">
-                    <cffile action="delete" file="#expandPath('/assets/contactImages/' & local.local.getContactImageQry.contactpicture)#">
+                    <cffile action="delete" file="#expandPath('/assets/contactImages/' & local.getContactImageQry.contactpicture)#">
                 </cfif>
 
                 <cftransaction action="commit" />
