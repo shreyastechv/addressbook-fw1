@@ -406,7 +406,7 @@
             "message" = ""
         }>
 
-        <cfquery name="local.deleteContactQuery">
+        <cfquery name="local.deleteContactQuery" datasource="addressbookdatasource">
             BEGIN TRANSACTION;
 
             -- Get Contact Picture Filename
