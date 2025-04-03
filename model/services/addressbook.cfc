@@ -254,8 +254,7 @@
         <cfargument required="true" name="contactPincode" type="string">
         <cfargument required="true" name="contactEmail" type="string">
         <cfargument required="true" name="contactPhone" type="string">
-        <cfargument required="true" name="roleIdsToInsert" type="string">
-        <cfargument required="true" name="roleIdsToDelete" type="string">
+        <cfargument required="true" name="roleIds" type="string">
 
         <cfset local.response = {
             "success" = false,
@@ -322,7 +321,7 @@
                             );
                         </cfquery>
 
-                        <cfif len(trim(arguments.roleIdsToInsert))>
+                        <cfif len(trim(arguments.roleIds))>
                             <cfquery name="local.addRolesQuery" datasource="addressbookdatasource">
                                 INSERT INTO
                                     contactRoles (
@@ -330,12 +329,12 @@
                                         roleId
                                     )
                                 VALUES
-                                <cfloop list="#arguments.roleIdsToInsert#" index="local.i" item="local.roleId">
+                                <cfloop list="#arguments.roleIds#" index="local.i" item="local.roleId">
                                     (
                                         <cfqueryparam value="#local.insertContactsResult.GENERATEDKEY#" cfsqltype="cf_sql_integer">,
                                         <cfqueryparam value="#trim(local.roleId)#" cfsqltype="cf_sql_integer">
                                     )
-                                    <cfif local.i LT listLen(arguments.roleIdsToInsert)>,</cfif>
+                                    <cfif local.i LT listLen(arguments.roleIds)>,</cfif>
                                 </cfloop>
                             </cfquery>
                         </cfif>
@@ -375,12 +374,9 @@
                                 deletedBy = <cfqueryparam value = "#session.userId#" cfsqltype = "cf_sql_varchar">
                             WHERE
                                 contactId = <cfqueryparam value="#arguments.contactId#" cfsqltype="cf_sql_integer">
-                                AND roleId IN (
-                                    <cfqueryparam value="#arguments.roleIdsToDelete#" cfsqltype="cf_sql_varchar" list="true">
-                                )
                         </cfquery>
 
-                        <cfif len(trim(arguments.roleIdsToInsert))>
+                        <cfif len(trim(arguments.roleIds))>
                             <cfquery name="local.addRolesQuery" datasource="addressbookdatasource">
                                 INSERT INTO
                                     contactRoles (
@@ -388,12 +384,12 @@
                                         roleId
                                     )
                                 VALUES
-                                <cfloop list="#arguments.roleIdsToInsert#" index="local.i" item="local.roleId">
+                                <cfloop list="#arguments.roleIds#" index="local.i" item="local.roleId">
                                     (
                                         <cfqueryparam value="#arguments.contactId#" cfsqltype="cf_sql_integer">,
                                         <cfqueryparam value="#trim(local.roleId)#" cfsqltype="cf_sql_integer">
                                     )
-                                    <cfif local.i LT listLen(arguments.roleIdsToInsert)>,</cfif>
+                                    <cfif local.i LT listLen(arguments.roleIds)>,</cfif>
                                 </cfloop>
                             </cfquery>
                         </cfif>

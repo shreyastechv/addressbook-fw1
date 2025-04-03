@@ -76,7 +76,6 @@ function createContact() {
 	$("#contactManagement")[0].reset();
 	$("#editContactId").val("");
 	$("#contactManagementMsgSection").text("");
-	$("#editContactRole").attr("defaultValue", []);
 	$('#contactManagementModal').modal('show');
 }
 
@@ -110,7 +109,6 @@ function editContact(event) {
 			$("#editContactEmail").val(email);
 			$("#editContactPhone").val(phone);
 			$("#editContactRole").val(roleIds);
-			$("#editContactRole").attr("defaultValue", roleIds);
 			$('#contactManagementModal').modal('show');
 		}
 	});
@@ -156,8 +154,6 @@ $("#contactManagement").submit(function(event) {
 	event.preventDefault();
 	const thisForm = this;
 	const contactManagementMsgSection = $("#contactManagementMsgSection");
-	const currentContactRoles = $("#editContactRole").val();
-	const previousContactRoles = $("#editContactRole").attr("defaultValue").split(",");
 	const contactDataObj = {
 		contactId: $("#editContactId").val(),
         contactTitle: $("#editContactTitle").val(),
@@ -174,8 +170,7 @@ $("#contactManagement").submit(function(event) {
         contactPincode: $("#editContactPincode").val(),
         contactEmail: $("#editContactEmail").val(),
         contactPhone: $("#editContactPhone").val(),
-		roleIdsToInsert: currentContactRoles.filter(element => !previousContactRoles.includes(element.trim())).join(","),
-		roleIdsToDelete: previousContactRoles.filter(element => !currentContactRoles.includes(element.trim())).join(",")
+        roleIds: $("#editContactRole").val()
 	};
 
 	// Convert object to formData

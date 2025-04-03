@@ -110,8 +110,7 @@ component accessors=true {
             contactPincode = rc.contactPincode,
             contactEmail = rc.contactEmail,
             contactPhone = rc.contactPhone,
-            roleIdsToInsert = rc.roleIdsToInsert,
-            roleIdsToDelete = rc.roleIdsToDelete
+            roleIds = rc.roleIds
         );
 
         variables.fw.renderData( "json", local.response );
