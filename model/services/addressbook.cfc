@@ -108,7 +108,7 @@
 
         <cftry>
             <cfquery name="local.qryGetContacts" datasource="addressbookdatasource">
-                <cfif val(arguments.contactId) EQ 0>
+                <cfif val(arguments.userId)>
                     SELECT
                         contactid,
                         firstname,
@@ -119,9 +119,9 @@
                     FROM
                         contactDetails
                     WHERE
-                        createdBy = <cfqueryparam value="#arguments.userId#" cfsqltype="cf_sql_integer">
+                        createdBy = <cfqueryparam value="#val(arguments.userId)#" cfsqltype="cf_sql_integer">
                         AND active = 1
-                <cfelse>
+                <cfelseif val(arguments.contactId)>
                     SELECT
                         cd.contactid,
                         cd.title,
@@ -145,7 +145,7 @@
                         LEFT JOIN contactRoles cr ON cd.contactid = cr.contactId AND cr.active = 1
                         LEFT JOIN roleDetails rd ON cr.roleId = rd.roleId
                     WHERE
-                        cd.contactid = <cfqueryparam value = "#arguments.contactId#" cfsqltype = "cf_sql_integer">
+                        cd.contactid = <cfqueryparam value = "#val(arguments.contactId)#" cfsqltype = "cf_sql_integer">
                     GROUP BY
                         cd.contactid,
                         cd.title,
@@ -166,7 +166,7 @@
             </cfquery>
 
             <cfloop query="local.qryGetContacts">
-                <cfif val(arguments.contactId) EQ 0>
+                <cfif val(arguments.userId)>
                     <cfset arrayAppend(local.response.data, {
                         "contactId" = local.qryGetContacts.contactid,
                         "firstName" = local.qryGetContacts.firstname,
@@ -175,7 +175,7 @@
                         "email" = local.qryGetContacts.email,
                         "phone" = local.qryGetContacts.phone
                     })>
-                <cfelse>
+                <cfelseif val(arguments.contactId)>
                     <cfset arrayAppend(local.response.data, {
                         "contactId" = local.qryGetContacts.contactid,
                         "title" = local.qryGetContacts.title,

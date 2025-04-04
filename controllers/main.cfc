@@ -14,6 +14,44 @@ component accessors=true {
         param name="rc.password" default="";
 
         if(structKeyExists(rc, "submitBtn")) {
+            // Fullname Validation
+            if (len(trim(rc.fullname)) EQ 0) {
+                rc.signupMsg &= "Enter first name. ";
+            } else if (isValid("regex", trim(rc.fullname), "\d")) {
+                rc.signupMsg &= "First name should not contain any digits. ";
+            }
+
+            // Email Validation
+            if (len(trim(rc.email)) EQ 0) {
+                rc.signupMsg &= "Enter an email address. ";
+            } else if (NOT isValid("email", trim(rc.email))) {
+                rc.signupMsg &= "Invalid email. ";
+            }
+
+            // Username Validation
+            if (len(trim(rc.username)) EQ 0) {
+                rc.signupMsg &= "Enter a username";
+            } else if (NOT isValid("email", trim(rc.username))) {
+                rc.signupMsg &= "Username should be a valid email address";
+            }
+
+            // Password Validation
+            if (len(trim(rc.password)) EQ 0) {
+                rc.signupMsg &= "Enter a password. ";
+            } else if (NOT (len(trim(rc.password)) GTE 8
+                AND refind('[A-Z]', trim(rc.password))
+                AND refind('[a-z]', trim(rc.password))
+                AND refind('[0-9]', trim(rc.password))
+                AND refind('[!@##$&*]', trim(rc.password)))) {
+                rc.signupMsg &= "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character. ";
+            }
+
+            // Return message if validation fails
+            if (len(trim(rc.signupMsg))) {
+                rc.signupMsg = rc.signupMsg;
+                return;
+            }
+
             local.signupResult = variables.addressbookService.signup(
                 fullname = rc.fullname,
                 email = rc.email,
@@ -63,10 +101,11 @@ component accessors=true {
     }
 
     public string function fetchContacts(struct rc) {
+        param name="rc.contactId" default=0;
         param name="local.contacts.data" default=[];
 
         local.contacts = variables.addressbookService.fetchContacts(
-            contactId = rc.contactId
+            contactId = val(rc.contactId)
         );
 
         variables.fw.renderData( "json", local.contacts );
